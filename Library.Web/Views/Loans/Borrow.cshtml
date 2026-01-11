@@ -1,0 +1,50 @@
+﻿@model Library.Web.ViewModels.Loans.BorrowLoanVm
+
+@{
+    ViewData["Title"] = "Borrow";
+}
+
+<h1>Borrow</h1>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        @Html.ValidationSummary()
+    </div>
+}
+
+<div class="mb-3">
+    <strong>Book:</strong> @Model.BookTitle
+</div>
+
+<div class="mb-3">
+    <strong>Available copies:</strong> @Model.AvailableCopies
+</div>
+
+<form asp-action="Borrow" method="post">
+    @Html.AntiForgeryToken()
+
+    <input type="hidden" asp-for="BookId" />
+    <input type="hidden" asp-for="BookTitle" />
+    <input type="hidden" asp-for="AvailableCopies" />
+
+    <div class="mb-3">
+        <label asp-for="Quantity" class="form-label"></label>
+        <input asp-for="Quantity" class="form-control" />
+        <span asp-validation-for="Quantity" class="text-danger"></span>
+        <div class="form-text">Max: @Model.AvailableCopies</div>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="DueAt" class="form-label"></label>
+        <input asp-for="DueAt" class="form-control" />
+        <span asp-validation-for="DueAt" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Borrow</button>
+    <a asp-controller="Books" asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
